@@ -1,0 +1,17 @@
+#include "mbed.h"
+
+InterruptIn button(PC_13);
+volatile int press_count = 0;
+
+void button_pressed() {
+    press_count++;
+    printf("Pressed: %d\n", press_count);
+}
+
+int main() {
+    button.mode(PullUp);
+    button.fall(&button_pressed);
+
+    while (1) {
+        }
+}
