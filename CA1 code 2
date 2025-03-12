@@ -1,0 +1,22 @@
+#include "mbed.h"
+
+DigitalOut led1(LED1);
+DigitalOut led2(LED2);
+Timer t1, t2;
+
+int main() {
+    t1.start();
+    t2.start();
+
+    while (true) {
+        if (t1.read() >= 2.0) {
+            led1 = !led1;
+            t1.reset();
+        }
+
+        if (t2.read() >= 5.0) {
+            led2 = !led2;
+            t2.reset();
+        }
+    }
+}
