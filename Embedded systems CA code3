@@ -1,7 +1,7 @@
 #include "mbed.h"
 
 InterruptIn button(PC_13);
-volatile int press_count = 0;
+int press_count = 0;
 
 void button_pressed() {
     press_count++;
