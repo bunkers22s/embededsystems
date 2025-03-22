@@ -1,0 +1,35 @@
+// Lab 1
+// Recursive Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, 13, ...
+
+int max_term = 1000;  // Global variable for maximum Fibonacci sequence
+
+// Recursive Fibonacci function
+int fib(int curr_term) {
+  if (curr_term == 0) {
+    return 0;
+  } else if (curr_term == 1) {
+    return 1;
+  } else {
+    return (fib(curr_term - 1) + fib(curr_term - 2));
+  }
+}
+
+// Function to print Fibonacci sequence
+  recuvFib(int max_term) {
+  Serial.print("recuvFib: 0, 1, ");
+
+  for (int i = 2; i < max_term; i++) {
+    int res = fib(i);
+    Serial.print(res);
+    Serial.print(", ");
+  }
+}
+
+void setup() {
+  delay(3000);
+  recuvFib(max_term);  // Print recursive Fibonacci sequence
+}
+
+void loop() {
+  // Empty loop
+}
