@@ -1,0 +1,98 @@
+//Embedded Systems, Lab3 3:  Serial terminal for sensors
+
+#include <Arduino_LSM9DS1.h>  // IMU sensor
+#include <Arduino_LPS22HB.h>  // Pressure & Temperature sensor
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial)
+    ;
+
+  // Initialize sensors
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU! Check connections and power.");
+    while (1)
+      ;
+  }
+
+  if (!BARO.begin()) {
+    Serial.println("Failed to initialize pressure/temperature sensor");  //error message if sensor isn't recognised.
+    while (1)
+      ;
+  }
+
+  // Print available commands
+  Serial.println("Available commands:");
+  Serial.println("'a' - Accelerometer ");
+  Serial.println("'m' - Magnetometer ");
+  Serial.println("'g' - Gyroscope ");
+  Serial.println("'t' - Temperature ");
+  Serial.println("'p' - Pressure ");
+}
+
+void loop() {
+  float x, y, z;
+
+  if (Serial.available()) {
+    char command = Serial.read();
+
+    switch (command) {
+      case 'a':
+        Serial.println("Accelerometer:");  // Accelerometer readings written to serial monitor when letter m is entered
+        if (IMU.accelerationAvailable()) {
+          IMU.readAcceleration(x, y, z);
+          Serial.print("X: ");
+          Serial.print(x, 4);
+          Serial.print(", Y: ");
+          Serial.print(y, 4);
+          Serial.print(", Z: ");
+          Serial.println(z, 4);
+        }
+        break;
+
+      case 'm':
+        Serial.println("Magnetometer:");  // Magnetometer readings written to serial monitor when letter m is entered
+        if (IMU.magneticFieldAvailable()) {
+          float mx, my, mz;
+          IMU.readMagneticField(mx, my, mz);
+          Serial.print("X: ");
+          Serial.print(mx, 4);
+          Serial.print(" uT, Y: ");
+          Serial.print(my, 4);
+          Serial.print(" uT, Z: ");
+          Serial.println(mz, 4);
+        }
+        break;
+
+      case 'g':
+        Serial.println("Gyroscope:");  //gyroscope readings written to serial monitor when letter g is entered
+        if (IMU.gyroscopeAvailable()) {
+          float gx, gy, gz;
+          IMU.readGyroscope(gx, gy, gz);
+          Serial.print("X: ");
+          Serial.print(gx, 4);
+          Serial.print(" dps, Y: ");
+          Serial.print(gy, 4);
+          Serial.print(" dps, Z: ");
+          Serial.println(gz, 4);
+        }
+        break;
+
+      case 't':
+        {
+          float temperature = BARO.readTemperature();  //temperature readings written to serial monitor when letter t is entered
+          Serial.print("Temperature = ");
+          Serial.print(temperature);
+          Serial.println(" C");
+          break;
+        }
+
+      case 'p':
+        Serial.println("Pressure:");  //pressure readings written to serial monitor when letter p is entered
+        Serial.print("Pressure: ");
+        Serial.print(BARO.readPressure(), 2);
+        Serial.println(" hPa");
+        break;
+    }
+  }
+}
