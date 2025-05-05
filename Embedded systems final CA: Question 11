@@ -1,0 +1,30 @@
+//Embedded systems final CA: Question 11
+
+int my_flag = 0; // Define Flag 
+const int inputPin = 1;     // D1 input
+const int outputPin1 = 3;   // D3 output
+const int outputPin2 = 4;   // D4 output
+
+void setup() {
+  pinMode(inputPin, INPUT);       // Initialise D1
+  pinMode(outputPin1, OUTPUT);    // Initialise D3
+  pinMode(outputPin2, OUTPUT);    // Initialise D4
+
+}
+
+void loop() {
+  while (1) { // While loop
+    if (digitalRead(inputPin) == LOW) {
+      if (my_flag == 0) {
+        my_flag = 1;
+
+        // Toggle D3 and D4
+        digitalWrite(outputPin1, !digitalRead(outputPin1));
+        digitalWrite(outputPin2, !digitalRead(outputPin2));
+
+        my_flag = 0;
+      }
+    }
+  }
+}
+
